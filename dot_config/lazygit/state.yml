@@ -1,0 +1,43 @@
+lastupdatecheck: 1741623362
+recentrepos:
+    - /Users/architr/stripe/zoolander
+    - /Users/architr/stripe/pay-server
+    - /Users/architr/.config/nvim
+    - /Users/architr/.local/share/chezmoi
+    - /Users/architr/dotfiles-overlay
+    - /Users/architr/stripe/gocode
+    - /Users/architr/flyte_v2
+    - /Users/architr/stripe/space-commander
+    - /Users/architr/stripe/third-party-containers
+    - /Users/architr/stripe/zoolander/mydata-dotfiles
+    - /Users/architr/.oh-my-zsh
+startuppopupversion: 5
+didshowhunkstaginghint: true
+lastversion: 0.56.0
+customcommandshistory:
+    - which git
+    - git push --force alt
+    - git push alt
+    - echo $SHELL
+    - git add .
+    - 'chore: Exclude risk.batch_merchant_models from compaction jira tickets'
+    - git remote -v
+    - 'chore: Create a `deploy_with_tensorflow` target to prevent pulling tf'
+    - pay stack push
+    - pay stack show
+    - 'git commit --allow-empty -m "feat: Base flyte resource class"'
+    - 'git commit -m "feat: Base Flyte resource class"'
+    - pay zoo:lint --fix
+    - gh pr create
+    - sc-2fa
+    - 'temp: simple_train_model'
+    - git commit -m "Allow empty"
+    - btop
+    - ls
+    - open third_party/py/missing/BUILD.bazel
+    - pwd
+    - 'chore: Add dnn_runtime_model'
+    - git config --global rerere.enabled
+    - git rebase --abort
+    - nvim third_party/py/missing/BUILD.bazel
+hidecommandlog: false
