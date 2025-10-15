@@ -1,0 +1,12 @@
+gui:
+  spinner:
+    frames: ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
+    rate: 100
+git:
+  paging:
+    colorArg: always
+    pager: delta --paging=never
+  autoForwardBranches: none
+os:
+  editPreset: 'nvim'
+
