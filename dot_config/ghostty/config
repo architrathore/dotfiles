@@ -1,0 +1,20 @@
+# Theme, UI
+theme = "Catppuccin Mocha"
+# theme = "Gruvbox dark"
+window-decoration = false
+font-size = 14.5
+background-opacity = 1.0
+
+# Match spacing "feel" from Alacritty
+# adjust-cell-width = "-5%"
+# adjust-cell-height = "5%"
+font-thicken = true
+
+font-family = JetBrains Mono
+
+# 50 MB scrollback
+scrollback-limit = 50000000
+
+# Fun
+# custom-shader = ./shaders/cursor_blaze.glsl
+# custom-shader = ./shaders/fireworks.glsl
