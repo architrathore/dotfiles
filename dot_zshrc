@@ -1,6 +1,89 @@
-# Start time tracking
 # zmodload zsh/zprof
 
+autoload -Uz compinit
+compinit -u
+
+PROFILE_ZSHRC=1
+
+if (( PROFILE_ZSHRC )); then
+  zmodload zsh/datetime
+
+  typeset -a _prof_names _prof_times
+  typeset -F _prof_start
+
+  tick() { _prof_start=$EPOCHREALTIME }
+  tock() {
+    _prof_names+=("$1")
+    _prof_times+=($(( (EPOCHREALTIME - _prof_start) * 1000 )))
+  }
+
+  _print_profile_table() {
+    # Config
+    local WARN=100 SLOW=500 OTHER="(other)" INDENT="    "
+    local C=$'\e[36m' G=$'\e[32m' Y=$'\e[33m' R=$'\e[31m' B=$'\e[1m' D=$'\e[2m' Z=$'\e[0m'
+
+    hline() { print "${C}${B}$1${(l:nw+2::─:)}$2${(l:tw+2::─:)}$3${Z}"; }
+
+    # Parse: group by prefix before first "/"
+    local -A gtimes gcounts
+    local -a gorder igrps inames itimes
+    local i n t g ch
+
+    for i in {1..${#_prof_names[@]}}; do
+      n=${_prof_names[i]} t=${_prof_times[i]}
+      if [[ $n == */* ]]; then g=${n%%/*} ch=${n#*/}; else g=$OTHER ch=$n; fi
+
+      [[ -z ${gtimes[$g]} ]] && { gorder+=($g); gtimes[$g]=0; gcounts[$g]=0; }
+      (( gtimes[$g] += t, gcounts[$g]++ ))
+      igrps+=($g) inames+=($ch) itimes+=($t)
+    done
+
+    # Sort: (other) goes last
+    local -a groups=()
+    for g in $gorder; do [[ $g != $OTHER ]] && groups+=($g); done
+    [[ -n ${gtimes[$OTHER]} ]] && groups+=($OTHER)
+
+    # Column widths
+    local nw=5 tw=14
+    for i in {1..${#inames[@]}}; do (( ${#INDENT} + ${#inames[i]} > nw )) && nw=$(( ${#INDENT} + ${#inames[i]} )); done
+    for g in $groups; do (( ${#g} + ${#gcounts[$g]} + 5 > nw )) && nw=$(( ${#g} + ${#gcounts[$g]} + 5 )); done
+
+    # Total
+    local total=0; for t in $_prof_times; do (( total += t )); done
+
+    # Render
+    local title="ZSHRC PROFILING RESULTS"
+    local inner=$(( nw + tw + 5 ))
+    local pl=$(( (inner - ${#title}) / 2 ))
+    local pr=$(( inner - ${#title} - pl ))
+
+    print
+    hline "┌" "─" "┐"
+    printf "${C}${B}│%*s%s%*s│${Z}\n" $pl "" "$title" $pr ""
+    hline "├" "┬" "┤"
+    printf "${C}│${Z} ${B}%-*s${Z} ${C}│${Z} ${B}%*s${Z} ${C}│${Z}\n" $nw "Block" $tw "Time (ms)"
+    hline "├" "┼" "┤"
+
+    local tc
+    for g in $groups; do
+      (( ${gtimes[$g]%.*} > SLOW )) && tc=$R || { (( ${gtimes[$g]%.*} > WARN )) && tc=$Y || tc=$G; }
+      printf "${C}│${Z} ${B}${tc}%-*s${Z} ${C}│${Z} ${B}${tc}%*.2f ms${Z} ${C}│${Z}\n" \
+        $nw "▶ ${g} (${gcounts[$g]})" $((tw-3)) "${gtimes[$g]}"
+      for i in {1..${#igrps[@]}}; do
+        if [[ ${igrps[i]} == $g ]]; then
+          (( ${itimes[i]%.*} > SLOW )) && tc=$R || { (( ${itimes[i]%.*} > WARN )) && tc=$Y || tc=$G; }
+          printf "${C}│${Z} ${D}%-*s${Z} ${C}│${Z} ${tc}%*.2f ms${Z} ${C}│${Z}\n" \
+            $nw "${INDENT}${inames[i]}" $((tw-3)) "${itimes[i]}"
+        fi
+      done
+    done
+
+    hline "├" "┼" "┤"
+    printf "${C}│${Z} ${B}%-*s${Z} ${C}│${Z} ${B}%*.2f ms${Z} ${C}│${Z}\n" $nw "TOTAL" $((tw-3)) "$total"
+    hline "└" "┴" "┘"
+    print
+  }
+fi
 
 # Prevent CPE customizations from overwriting 
 # changes made to this file.
@@ -17,7 +100,9 @@
 # file (~/.zshrc) after the Stripe config
 # is sourced.
 if [[ -f ~/.stripe/shellinit/zshrc ]]; then
-   source ~/.stripe/shellinit/zshrc 
+  tick
+  source ~/.stripe/shellinit/zshrc 
+  tock "zshrc/stripe-shellinit-zshrc"
 fi
 ### END STRIPE
 
@@ -45,6 +130,7 @@ export GH_HOST=git.corp.stripe.com
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -70,7 +156,9 @@ plugins=(
 	zsh-syntax-highlighting
 )
 
+tick
 source $ZSH/oh-my-zsh.sh 
+tock "zshrc/oh-my-zsh.sh"
 
 # XDG_CONFIG_HOME for lazygit etc
 export XDG_CONFIG_HOME="$HOME/.config"
@@ -79,24 +167,30 @@ export XDG_CONFIG_HOME="$HOME/.config"
 # [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init - zsh)"
+# tick
+# export PYENV_ROOT="$HOME/.pyenv"
+# [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init - zsh)"
 # pyenv activate zoolander-local-venv
 # PYENV_VERSION=3.11.10
-
+# tock "pyenv"
 
 # start starship
+tick
 eval "$(starship init zsh)"
+tock "zshrc/starship"
 
 # fzf shell integration
+tick
 source <(fzf --zsh)
+tock "zshrc/fzf"
 
 # -----------------------------
 # ---------- Aliases ----------
 # -----------------------------
 
 # Replace ls with eza
+tick
 alias ld="eza -lD"
 alias lf="eza -lf --color=always"
 alias lh="eza -dl .* --group-directories-first"
@@ -150,6 +244,7 @@ alias run-join="pay exec ./tools/scripts/experimental/chronon_poc/chronon_cli.py
 # Linting and typechecking
 alias zoo-lint="cd ~/stripe/zoolander/ && pay zoo:lint --fix"
 alias typecheck="./dev/py check --with-typechecking --fix"
+tock "zshrc/aliases"
 
 # diorama model info
 model-info ()
@@ -183,5 +278,8 @@ alias tc='/usr/local/stripe/bin/test_cookbook'
 alias cz='/usr/local/stripe/bin/chef-zero'
 alias cookit='tc && cz'
 # STOP - Managed by chef cookbook stripe_cpe_bin
+
+# Print profiling results at the end of zshrc load
+(( PROFILE_ZSHRC )) && _print_profile_table
 
 # zprof
