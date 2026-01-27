@@ -3,7 +3,7 @@
 autoload -Uz compinit
 compinit -u
 
-PROFILE_ZSHRC=1
+PROFILE_ZSHRC=0
 
 if (( PROFILE_ZSHRC )); then
   zmodload zsh/datetime
@@ -83,6 +83,11 @@ if (( PROFILE_ZSHRC )); then
     hline "└" "┴" "┘"
     print
   }
+fi
+# if profiler is not enabled, make tick and tock do nothing
+if (( ! PROFILE_ZSHRC )); then
+  tick() { : }
+  tock() { : }
 fi
 
 # Prevent CPE customizations from overwriting 
