@@ -1,8 +1,9 @@
 # zmodload zsh/zprof
+source ~/.oh-my-zsh/plugins/zsh-defer/zsh-defer.plugin.zsh
 
 autoload -Uz compinit
 compinit -u
-
+__STRIPE_SHELLINIT_ZSH_SKIP_COMPINIT=1
 PROFILE_ZSHRC=0
 
 if (( PROFILE_ZSHRC )); then
@@ -92,7 +93,7 @@ fi
 
 # Prevent CPE customizations from overwriting 
 # changes made to this file.
-# STRIPE_DO_NOT_MANAGE=1
+STRIPE_DO_NOT_MANAGE=1
 
 ### BEGIN STRIPE
 # All Stripe related shell configuration
@@ -106,7 +107,7 @@ fi
 # is sourced.
 if [[ -f ~/.stripe/shellinit/zshrc ]]; then
   tick
-  source ~/.stripe/shellinit/zshrc 
+  zsh-defer "source ~/.stripe/shellinit/zshrc"
   tock "zshrc/stripe-shellinit-zshrc"
 fi
 ### END STRIPE
@@ -163,6 +164,7 @@ plugins=(
 
 tick
 source $ZSH/oh-my-zsh.sh 
+# zsh-defer source $ZSH/oh-my-zsh.sh 
 tock "zshrc/oh-my-zsh.sh"
 
 # XDG_CONFIG_HOME for lazygit etc
