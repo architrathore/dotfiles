@@ -1,0 +1,57 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+set -e -o pipefail
+
+echo "Installing packages for Linux devbox..."
+
+# --- apt packages ---
+sudo apt-get update -qq
+sudo apt-get install -y -qq ripgrep fd-find btop git-delta
+
+# --- architecture detection ---
+ARCH=$(uname -m)
+if [ "$ARCH" = "aarch64" ]; then ARCH="arm64"; fi
+
+# --- neovim ---
+if [ ! -d "/opt/nvim-linux-${ARCH}" ]; then
+  echo "Installing neovim..."
+  curl -LO "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-${ARCH}.tar.gz"
+  sudo rm -rf /opt/nvim
+  sudo tar -C /opt -xf "nvim-linux-${ARCH}.tar.gz"
+  rm -f "nvim-linux-${ARCH}.tar.gz"
+fi
+if ! grep -q "export PATH=\$PATH:/opt/nvim-linux-${ARCH}/bin" ~/.bashrc; then
+  echo "export PATH=\$PATH:/opt/nvim-linux-${ARCH}/bin" >> ~/.bashrc
+fi
+
+# --- fzf ---
+if [ ! -d ~/.fzf ]; then
+  echo "Installing fzf..."
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  ~/.fzf/install --all
+fi
+
+# --- lazygit ---
+if [ ! -f /usr/local/bin/lazygit ]; then
+  echo "Installing lazygit..."
+  LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*')
+  curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_${ARCH}.tar.gz"
+  tar xf lazygit.tar.gz lazygit
+  sudo install lazygit -D -t /usr/local/bin/
+  rm -f lazygit.tar.gz lazygit
+fi
+if ! grep -q "alias lg='lazygit'" ~/.bashrc; then
+  echo "alias lg='lazygit'" >> ~/.bashrc
+fi
+
+# --- opencode ---
+if ! command -v opencode &> /dev/null; then
+  echo "Installing opencode..."
+  npm install -g --prefix ~/.local opencode-ai
+fi
+if ! grep -q "export PATH=\$PATH:~/.local/bin" ~/.bashrc; then
+  echo "export PATH=\$PATH:~/.local/bin" >> ~/.bashrc
+fi
+
+echo "Package installation complete."
+{{ end -}}

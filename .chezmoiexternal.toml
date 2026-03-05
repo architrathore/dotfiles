@@ -1,3 +1,3 @@
 [".config/nvim"]
     type = "git-repo"
-    url = "git@github.com:architrathore/nvim-config.git"
+    url = "https://git.corp.stripe.com/architr/nvim-config.git"
