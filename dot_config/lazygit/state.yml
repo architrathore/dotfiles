@@ -1,11 +1,21 @@
 lastupdatecheck: 1741623362
 recentrepos:
+    - /Users/architr/stripe/mint
     - /Users/architr/stripe/zoolander
-    - /Users/architr/stripe/pay-server
     - /Users/architr/.config/nvim
+    - /Users/architr/stripe/pay-server
     - /Users/architr/.local/share/chezmoi
-    - /Users/architr/dotfiles-overlay
+    - /Users/architr/raycast-stripe-utilities
     - /Users/architr/stripe/gocode
+    - /Users/architr/stripe/zoolander/
+    - /Users/architr/.local/share/nvim/lazy/vscode-diff.nvim
+    - /Users/architr/.local/share/nvim/lazy/SchemaStore.nvim
+    - /Users/architr/.local/share/nvim/lazy/nvim-treesitter-textobjects
+    - /Users/architr/.local/share/nvim/lazy/nvim-treesitter-context
+    - /Users/architr/.local/share/nvim/lazy/nvim-treesitter
+    - /Users/architr/.local/share/nvim/lazy/nvim-lspconfig
+    - /Users/architr/.local/share/nvim/lazy/copilot.lua
+    - /Users/architr/dotfiles-overlay
     - /Users/architr/flyte_v2
     - /Users/architr/stripe/space-commander
     - /Users/architr/stripe/third-party-containers
@@ -13,15 +23,18 @@ recentrepos:
     - /Users/architr/.oh-my-zsh
 startuppopupversion: 5
 didshowhunkstaginghint: true
-lastversion: 0.56.0
+lastversion: 0.59.0
 customcommandshistory:
+    - git remote -v
+    - git push origin
+    - git status -u
+    - git push alt
+    - git fetch
     - which git
     - git push --force alt
-    - git push alt
     - echo $SHELL
     - git add .
     - 'chore: Exclude risk.batch_merchant_models from compaction jira tickets'
-    - git remote -v
     - 'chore: Create a `deploy_with_tensorflow` target to prevent pulling tf'
     - pay stack push
     - pay stack show
@@ -40,4 +53,4 @@ customcommandshistory:
     - git config --global rerere.enabled
     - git rebase --abort
     - nvim third_party/py/missing/BUILD.bazel
-hidecommandlog: false
+hidecommandlog: true

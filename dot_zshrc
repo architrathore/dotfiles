@@ -33,7 +33,7 @@ STRIPE_DO_NOT_MANAGE=1
 if [[ -f ~/.stripe/shellinit/zshrc ]]; then
   tick
   __STRIPE_SHELLINIT_ZSH_SKIP_COMPINIT=1
-  zsh-defer "source ~/.stripe/shellinit/zshrc"
+  zsh-defer -t 5 source ~/.stripe/shellinit/zshrc
   tock "zshrc/stripe-shellinit-zshrc"
 fi
 ### END STRIPE
