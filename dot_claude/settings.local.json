@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(chmod:*)",
+      "WebFetch(domain:www.conventionalcommits.org)",
+      "WebSearch",
+      "Bash(opencode run:*)",
+      "Bash(tee:*)",
+      "Bash(python3:*)",
+      "Bash(opencode:*)",
+      "WebFetch(domain:opencode.ai)",
+      "WebFetch(domain:docs.opencode.ai)",
+      "WebFetch(domain:github.com)",
+      "Bash(grep:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(curl:*)",
+      "Bash(ls:*)"
+    ]
+  }
+}

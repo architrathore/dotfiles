@@ -1,0 +1,152 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "share": "disabled",
+  "snapshot": false,
+  "mcp": {
+    "toolshed": {
+      "type": "local",
+      "command": [
+        "/Users/architr/stripe/pay-server/.cursor/toolshed_stdio_shim.sh",
+        "cursor"
+      ]
+    }
+  },
+  "provider": {
+    "stripe-litellm": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Stripe LiteLLM",
+      "options": {
+        "baseURL": "http://litellm.qa.corp.stripe.com.certproxy.localhost:7891/v1",
+        "apiKey": "use_case=development&team=fraud-detection",
+        // "setCacheKey": true,
+      },
+      "models": {
+        // Claude models
+        "claude-opus-4.6": {
+          "name": "Claude Opus 4.6",
+          "limit": {
+            "context": 1000000,
+            "output": 128000
+          }
+        },
+        "claude-opus-4.5": {
+          "name": "Claude Opus 4.5",
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          }
+        },
+        "claude-sonnet-4.5": {
+          "name": "Claude Sonnet 4.5",
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          }
+        },
+        "claude-sonnet-4": {
+          "name": "Claude Sonnet 4",
+          "limit": {
+            "context": 1000000,
+            "output": 64000
+          }
+        },
+        // Gemini models
+        "gemini-3-pro": {
+          "name": "Gemini 3 Pro",
+          "limit": {
+            "context": 1048576,
+            "output": 65535
+          }
+        },
+        // GPT models
+        "gpt-5.3-codex": {
+          "name": "GPT-5.3 Codex",
+          "limit": {
+            "context": 272000,
+            "output": 128000
+          }
+        },
+        "gpt-5.2-codex": {
+          "name": "GPT-5.2 Codex",
+          "limit": {
+            "context": 272000,
+            "output": 128000
+          }
+        },
+        "gpt-5.2": {
+          "name": "GPT-5.2",
+          "limit": {
+            "context": 272000,
+            "output": 128000
+          }
+        },
+        "gpt-5.1-codex": {
+          "name": "GPT-5.1 Codex",
+          "limit": {
+            "context": 272000,
+            "output": 128000
+          }
+        },
+        "gpt-5.1": {
+          "name": "GPT-5.1",
+          "limit": {
+            "context": 272000,
+            "output": 128000
+          }
+        },
+        "gpt-5-codex": {
+          "name": "GPT-5 Codex",
+          "limit": {
+            "context": 272000,
+            "output": 128000
+          }
+        },
+        "gpt-5": {
+          "name": "GPT-5",
+          "limit": {
+            "context": 272000,
+            "output": 128000
+          }
+        },
+        "gpt-5-mini": {
+          "name": "GPT-5 Mini",
+          "limit": {
+            "context": 272000,
+            "output": 128000
+          }
+        },
+        "gpt-5-nano": {
+          "name": "GPT-5 Nano",
+          "limit": {
+            "context": 272000,
+            "output": 128000
+          }
+        },
+        "gpt-4.1": {
+          "name": "GPT-4.1",
+          "limit": {
+            "context": 1047576,
+            "output": 32768
+          }
+        },
+        // Reasoning models
+        "o4-mini": {
+          "name": "O4 Mini",
+          "limit": {
+            "context": 200000,
+            "output": 100000
+          }
+        }
+      }
+    }
+  },
+  "model": "stripe-litellm/claude-opus-4.6",
+  "enabled_providers": [
+    "stripe-litellm",
+  ],
+  "instructions": [
+    "CLAUDE.md",
+    "AGENTS.md",
+    ".cursor/rules/*.md"
+  ]
+}
