@@ -6,7 +6,7 @@
     "toolshed": {
       "type": "local",
       "command": [
-        "/Users/architr/stripe/pay-server/.cursor/toolshed_stdio_shim.sh",
+        "{{ if eq .chezmoi.os "darwin" }}/Users/architr/stripe/pay-server{{ else }}/pay/src/pay-server{{ end }}/.cursor/toolshed_stdio_shim.sh",
         "cursor"
       ]
     }
