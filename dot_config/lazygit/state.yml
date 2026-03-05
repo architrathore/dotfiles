@@ -1,10 +1,10 @@
 lastupdatecheck: 1741623362
 recentrepos:
+    - /Users/architr/.local/share/chezmoi
     - /Users/architr/stripe/mint
     - /Users/architr/stripe/zoolander
     - /Users/architr/.config/nvim
     - /Users/architr/stripe/pay-server
-    - /Users/architr/.local/share/chezmoi
     - /Users/architr/raycast-stripe-utilities
     - /Users/architr/stripe/gocode
     - /Users/architr/stripe/zoolander/
