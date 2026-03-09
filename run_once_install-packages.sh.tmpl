@@ -12,6 +12,12 @@ sudo apt-get install -y -qq ripgrep fd-find btop git-delta
 ARCH=$(uname -m)
 if [ "$ARCH" = "aarch64" ]; then ARCH="arm64"; fi
 
+HOST_TYPE_FILE="/pay/conf/host_type"
+IS_MYDATA=false
+if [[ -f "${HOST_TYPE_FILE}" ]] && grep -q "mydata" "${HOST_TYPE_FILE}"; then
+  IS_MYDATA=true
+fi
+
 # --- neovim ---
 if [ ! -d "/opt/nvim-linux-${ARCH}" ]; then
   echo "Installing neovim..."
@@ -47,7 +53,28 @@ fi
 # --- opencode ---
 if ! command -v opencode &> /dev/null; then
   echo "Installing opencode..."
-  npm install -g --prefix ~/.local opencode-ai
+  if [[ "${IS_MYDATA}" == "true" ]]; then
+    OPENCODE_VERSION="1.2.23"
+    case "${ARCH}" in
+      x86_64) OPENCODE_ARCH="x64" ;;
+      arm64) OPENCODE_ARCH="arm64" ;;
+      *)
+        echo "Unsupported architecture for opencode: ${ARCH}" >&2
+        exit 1
+        ;;
+    esac
+
+    OPENCODE_TARBALL_URL="https://github.com/anomalyco/opencode/releases/download/v${OPENCODE_VERSION}/opencode-linux-${OPENCODE_ARCH}.tar.gz"
+
+    mkdir -p ~/.local/bin
+    OPENCODE_TMPDIR="$(mktemp -d)"
+    trap 'rm -rf "${OPENCODE_TMPDIR}"' EXIT
+    wget -qO "${OPENCODE_TMPDIR}/opencode.tar.gz" "${OPENCODE_TARBALL_URL}"
+    tar -xzf "${OPENCODE_TMPDIR}/opencode.tar.gz" -C "${OPENCODE_TMPDIR}"
+    install -m 0755 "${OPENCODE_TMPDIR}/opencode" ~/.local/bin/opencode
+  else
+    npm install -g --prefix ~/.local opencode-ai
+  fi
 fi
 if ! grep -q "export PATH=\$PATH:~/.local/bin" ~/.bashrc; then
   echo "export PATH=\$PATH:~/.local/bin" >> ~/.bashrc

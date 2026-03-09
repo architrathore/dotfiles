@@ -1,9 +1,10 @@
 lastupdatecheck: 1741623362
 recentrepos:
     - /Users/architr/.local/share/chezmoi
+    - /Users/architr/dotfiles-overlay
+    - /Users/architr/.config/nvim
     - /Users/architr/stripe/mint
     - /Users/architr/stripe/zoolander
-    - /Users/architr/.config/nvim
     - /Users/architr/stripe/pay-server
     - /Users/architr/raycast-stripe-utilities
     - /Users/architr/stripe/gocode
@@ -15,7 +16,6 @@ recentrepos:
     - /Users/architr/.local/share/nvim/lazy/nvim-treesitter
     - /Users/architr/.local/share/nvim/lazy/nvim-lspconfig
     - /Users/architr/.local/share/nvim/lazy/copilot.lua
-    - /Users/architr/dotfiles-overlay
     - /Users/architr/flyte_v2
     - /Users/architr/stripe/space-commander
     - /Users/architr/stripe/third-party-containers
@@ -25,10 +25,11 @@ startuppopupversion: 5
 didshowhunkstaginghint: true
 lastversion: 0.59.0
 customcommandshistory:
+    - git push stripe
+    - git push alt
     - git remote -v
     - git push origin
     - git status -u
-    - git push alt
     - git fetch
     - which git
     - git push --force alt
