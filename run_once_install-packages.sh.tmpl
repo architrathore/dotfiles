@@ -2,11 +2,30 @@
 #!/bin/bash
 set -e -o pipefail
 
-echo "Installing packages for Linux devbox..."
+# --- logging ---
+if [[ -t 1 ]] && command -v tput >/dev/null 2>&1 && [[ "$(tput colors 2>/dev/null || echo 0)" -ge 8 ]]; then
+  C_RESET="$(tput sgr0)"
+  C_BOLD="$(tput bold)"
+  C_BLUE="$(tput setaf 4)"
+  C_GREEN="$(tput setaf 2)"
+  C_YELLOW="$(tput setaf 3)"
+  C_RED="$(tput setaf 1)"
+else
+  C_RESET=""
+  C_BOLD=""
+  C_BLUE=""
+  C_GREEN=""
+  C_YELLOW=""
+  C_RED=""
+fi
 
-# --- apt packages ---
-sudo apt-get update -qq
-sudo apt-get install -y -qq ripgrep fd-find btop git-delta
+log_step() { echo -e "${C_BOLD}${C_BLUE}==>${C_RESET} $*"; }
+log_info() { echo -e "${C_BLUE}[info]${C_RESET} $*"; }
+log_ok() { echo -e "${C_GREEN}[ok]${C_RESET} $*"; }
+log_warn() { echo -e "${C_YELLOW}[warn]${C_RESET} $*"; }
+log_error() { echo -e "${C_RED}[error]${C_RESET} $*"; }
+
+log_step "Installing packages for Linux devbox"
 
 # --- architecture detection ---
 ARCH=$(uname -m)
@@ -18,48 +37,78 @@ if [[ -f "${HOST_TYPE_FILE}" ]] && grep -q "mydata" "${HOST_TYPE_FILE}"; then
   IS_MYDATA=true
 fi
 
+if [[ "${IS_MYDATA}" == "true" ]]; then
+  log_info "Host type: mydata"
+else
+  log_info "Host type: non-mydata (or ${HOST_TYPE_FILE} missing)"
+fi
+log_info "Detected architecture: ${ARCH}"
+
+# --- apt packages ---
+log_step "Installing apt packages"
+sudo apt-get update -qq
+sudo apt-get install -y -qq ripgrep fd-find btop git-delta
+log_ok "Apt packages installed/updated"
+
 # --- neovim ---
 if [ ! -d "/opt/nvim-linux-${ARCH}" ]; then
-  echo "Installing neovim..."
+  log_step "Installing neovim"
   curl -LO "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-${ARCH}.tar.gz"
   sudo rm -rf /opt/nvim
   sudo tar -C /opt -xf "nvim-linux-${ARCH}.tar.gz"
   rm -f "nvim-linux-${ARCH}.tar.gz"
+  log_ok "Neovim installed at /opt/nvim-linux-${ARCH}"
+else
+  log_info "Neovim already present at /opt/nvim-linux-${ARCH}; skipping"
 fi
+
 if ! grep -q "export PATH=\$PATH:/opt/nvim-linux-${ARCH}/bin" ~/.bashrc; then
   echo "export PATH=\$PATH:/opt/nvim-linux-${ARCH}/bin" >> ~/.bashrc
+  log_ok "Added neovim PATH entry to ~/.bashrc"
+else
+  log_info "Neovim PATH entry already exists in ~/.bashrc"
 fi
 
 # --- fzf ---
 if [ ! -d ~/.fzf ]; then
-  echo "Installing fzf..."
+  log_step "Installing fzf"
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
   ~/.fzf/install --all
+  log_ok "fzf installed"
+else
+  log_info "fzf already installed; skipping"
 fi
 
 # --- lazygit ---
 if [ ! -f /usr/local/bin/lazygit ]; then
-  echo "Installing lazygit..."
+  log_step "Installing lazygit"
   LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": *"v\K[^"]*')
   curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_${ARCH}.tar.gz"
   tar xf lazygit.tar.gz lazygit
   sudo install lazygit -D -t /usr/local/bin/
   rm -f lazygit.tar.gz lazygit
+  log_ok "lazygit ${LAZYGIT_VERSION} installed"
+else
+  log_info "lazygit already installed at /usr/local/bin/lazygit; skipping"
 fi
+
 if ! grep -q "alias lg='lazygit'" ~/.bashrc; then
   echo "alias lg='lazygit'" >> ~/.bashrc
+  log_ok "Added alias lg='lazygit' to ~/.bashrc"
+else
+  log_info "Alias lg already exists in ~/.bashrc"
 fi
 
 # --- opencode ---
 if ! command -v opencode &> /dev/null; then
-  echo "Installing opencode..."
+  log_step "Installing opencode"
   if [[ "${IS_MYDATA}" == "true" ]]; then
     OPENCODE_VERSION="1.2.23"
     case "${ARCH}" in
       x86_64) OPENCODE_ARCH="x64" ;;
       arm64) OPENCODE_ARCH="arm64" ;;
       *)
-        echo "Unsupported architecture for opencode: ${ARCH}" >&2
+        log_error "Unsupported architecture for opencode: ${ARCH}"
         exit 1
         ;;
     esac
@@ -72,13 +121,21 @@ if ! command -v opencode &> /dev/null; then
     wget -qO "${OPENCODE_TMPDIR}/opencode.tar.gz" "${OPENCODE_TARBALL_URL}"
     tar -xzf "${OPENCODE_TMPDIR}/opencode.tar.gz" -C "${OPENCODE_TMPDIR}"
     install -m 0755 "${OPENCODE_TMPDIR}/opencode" ~/.local/bin/opencode
+    log_ok "opencode ${OPENCODE_VERSION} installed from GitHub release"
   else
     npm install -g --prefix ~/.local opencode-ai
+    log_ok "opencode installed via npm"
   fi
-fi
-if ! grep -q "export PATH=\$PATH:~/.local/bin" ~/.bashrc; then
-  echo "export PATH=\$PATH:~/.local/bin" >> ~/.bashrc
+else
+  log_info "opencode already installed; skipping"
 fi
 
-echo "Package installation complete."
+if ! grep -q "export PATH=\$PATH:~/.local/bin" ~/.bashrc; then
+  echo "export PATH=\$PATH:~/.local/bin" >> ~/.bashrc
+  log_ok "Added ~/.local/bin PATH entry to ~/.bashrc"
+else
+  log_info "~/.local/bin PATH entry already exists in ~/.bashrc"
+fi
+
+log_ok "Package installation complete"
 {{ end -}}
