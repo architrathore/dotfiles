@@ -5,7 +5,7 @@ gui:
 git:
   pagers:
     - colorArg: always
-      pager: delta --paging=never
+      pager: delta --paging=never --config ~/.config/lazygit/delta-themes.gitconfig --features arctic-fox
   autoForwardBranches: none
 os:
   editPreset: 'nvim'
