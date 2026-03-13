@@ -2,10 +2,10 @@ lastupdatecheck: 1741623362
 recentrepos:
     - /Users/architr/.local/share/chezmoi
     - /Users/architr/stripe/zoolander
-    - /Users/architr/dotfiles-overlay
-    - /Users/architr/.config/nvim
     - /Users/architr/stripe/mint
     - /Users/architr/stripe/pay-server
+    - /Users/architr/.config/nvim
+    - /Users/architr/dotfiles-overlay
     - /Users/architr/raycast-stripe-utilities
     - /Users/architr/stripe/gocode
     - /Users/architr/stripe/zoolander/
@@ -23,12 +23,12 @@ recentrepos:
     - /Users/architr/.oh-my-zsh
 startuppopupversion: 5
 didshowhunkstaginghint: true
-lastversion: 0.59.0
+lastversion: 0.60.0
 customcommandshistory:
-    - git remote -v
+    - git push origin
     - git push alt
     - git push stripe
-    - git push origin
+    - git remote -v
     - git status -u
     - git fetch
     - which git
