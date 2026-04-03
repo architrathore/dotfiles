@@ -1,17 +1,6 @@
 {
   "model": "opus[1m]",
   "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/notify.sh",
-            "timeout": 5
-          }
-        ]
-      }
-    ],
     "Notification": [
       {
         "matcher": "permission_prompt|idle_prompt",
@@ -22,14 +11,103 @@
             "timeout": 5
           }
         ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "ISLAND_HOOK_AGENT=claude ISLAND_HOOK_HOST_KIND=host '/Users/architr/.local/bin/island-agent-hook'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "ISLAND_HOOK_AGENT=claude ISLAND_HOOK_HOST_KIND=host '/Users/architr/.local/bin/island-agent-hook'"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "ISLAND_HOOK_AGENT=claude ISLAND_HOOK_HOST_KIND=host '/Users/architr/.local/bin/island-agent-hook'"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "ISLAND_HOOK_AGENT=claude ISLAND_HOOK_HOST_KIND=host '/Users/architr/.local/bin/island-agent-hook'"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "ISLAND_HOOK_AGENT=claude ISLAND_HOOK_HOST_KIND=host '/Users/architr/.local/bin/island-agent-hook'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/notify.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "ISLAND_HOOK_AGENT=claude ISLAND_HOOK_HOST_KIND=host '/Users/architr/.local/bin/island-agent-hook'"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "ISLAND_HOOK_AGENT=claude ISLAND_HOOK_HOST_KIND=host '/Users/architr/.local/bin/island-agent-hook'"
+          }
+        ]
       }
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
     "risk-fraud@stripe-internal-marketplace": true
   },
+  "effortLevel": "medium",
+  "skipDangerousModePermissionPrompt": true,
   "feedbackSurveyState": {
     "lastShownTime": 1754343273913
-  },
-  "effortLevel": "medium"
+  }
 }
