@@ -102,9 +102,7 @@
     "type": "command",
     "command": "bash ~/.claude/statusline-command.sh"
   },
-  "enabledPlugins": {
-    "risk-fraud@stripe-internal-marketplace": true
-  },
+  "enabledPlugins": {},
   "effortLevel": "medium",
   "skipDangerousModePermissionPrompt": true,
   "feedbackSurveyState": {

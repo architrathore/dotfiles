@@ -32,8 +32,14 @@ STRIPE_DO_NOT_MANAGE=1
 # is sourced.
 if [[ -f ~/.stripe/shellinit/zshrc ]]; then
   tick
-  __STRIPE_SHELLINIT_ZSH_SKIP_COMPINIT=1
+  # append  ~/stripe/space-commander/bin/ to PATH so that 
+  # "Open in IDE" for devboxes works (it requires sc-ssh-wrapper to 
+  # be on the path)
+  # __STRIPE_SHELLINIT_ZSH_SKIP_COMPINIT=1
+  __STRIPE_SHELLINIT_ZSH_SKIP_PROMPT=1
+  export PATH="$HOME/stripe/space-commander/bin:$PATH"
   zsh-defer -t 5 source ~/.stripe/shellinit/zshrc
+  # source ~/.stripe/shellinit/zshrc
   tock "zshrc/stripe-shellinit-zshrc"
 fi
 ### END STRIPE
@@ -143,6 +149,11 @@ alias run-join="pay exec ./tools/scripts/experimental/chronon_poc/chronon_cli.py
 alias zoo-lint="cd ~/stripe/zoolander/ && pay zoo:lint --fix"
 alias typecheck="./dev/py check --with-typechecking --fix"
 tock "zshrc/aliases"
+
+# AI tools
+alias cc_yolo="claude --dangerously-skip-permissions"
+alias cx_yolo="codex --yolo"
+alias oc="opencode"
 
 # diorama model info
 model-info ()

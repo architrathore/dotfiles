@@ -1,12 +1,15 @@
 lastupdatecheck: 1741623362
 recentrepos:
     - /Users/architr/.local/share/chezmoi
-    - /Users/architr/stripe/zoolander
     - /Users/architr/stripe/mint
-    - /Users/architr/stripe/pay-server
-    - /Users/architr/.config/nvim
-    - /Users/architr/dotfiles-overlay
+    - /Users/architr/stripe/llm-island
     - /Users/architr/raycast-stripe-utilities
+    - /Users/architr/.config/nvim
+    - /Users/architr/stripe/zoolander
+    - /Users/architr/stripe/pay-server
+    - /Users/architr/stripe/fuzzsearchd
+    - /Users/architr/stripe/fuzzysearchd-fork
+    - /Users/architr/dotfiles-overlay
     - /Users/architr/stripe/gocode
     - /Users/architr/stripe/zoolander/
     - /Users/architr/.local/share/nvim/lazy/vscode-diff.nvim
@@ -23,12 +26,16 @@ recentrepos:
     - /Users/architr/.oh-my-zsh
 startuppopupversion: 5
 didshowhunkstaginghint: true
-lastversion: 0.60.0
+lastversion: 0.61.1
 customcommandshistory:
     - git push origin
+    - git pull origin master
+    - git pull alt master
+    - git push origin master
     - git push alt
-    - git push stripe
+    - git pull alt
     - git remote -v
+    - git push stripe
     - git status -u
     - git fetch
     - which git
@@ -54,4 +61,5 @@ customcommandshistory:
     - git config --global rerere.enabled
     - git rebase --abort
     - nvim third_party/py/missing/BUILD.bazel
-hidecommandlog: true
+hidecommandlog: false
+githubPullRequests: {}
