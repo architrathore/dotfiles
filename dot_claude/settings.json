@@ -11,59 +11,6 @@
             "timeout": 5
           }
         ]
-      },
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "ISLAND_HOOK_AGENT=claude ISLAND_HOOK_HOST_KIND=host '/Users/architr/.local/bin/island-agent-hook'"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "ISLAND_HOOK_AGENT=claude ISLAND_HOOK_HOST_KIND=host '/Users/architr/.local/bin/island-agent-hook'"
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "ISLAND_HOOK_AGENT=claude ISLAND_HOOK_HOST_KIND=host '/Users/architr/.local/bin/island-agent-hook'"
-          }
-        ]
-      }
-    ],
-    "SessionEnd": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "ISLAND_HOOK_AGENT=claude ISLAND_HOOK_HOST_KIND=host '/Users/architr/.local/bin/island-agent-hook'"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "ISLAND_HOOK_AGENT=claude ISLAND_HOOK_HOST_KIND=host '/Users/architr/.local/bin/island-agent-hook'"
-          }
-        ]
       }
     ],
     "Stop": [
@@ -73,26 +20,6 @@
             "type": "command",
             "command": "~/.claude/hooks/notify.sh",
             "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "ISLAND_HOOK_AGENT=claude ISLAND_HOOK_HOST_KIND=host '/Users/architr/.local/bin/island-agent-hook'"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "ISLAND_HOOK_AGENT=claude ISLAND_HOOK_HOST_KIND=host '/Users/architr/.local/bin/island-agent-hook'"
           }
         ]
       }
