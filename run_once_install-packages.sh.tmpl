@@ -92,11 +92,12 @@ else
   log_info "lazygit already installed at /usr/local/bin/lazygit; skipping"
 fi
 
-if ! grep -q "alias lg='lazygit'" ~/.bashrc; then
-  echo "alias lg='lazygit'" >> ~/.bashrc
-  log_ok "Added alias lg='lazygit' to ~/.bashrc"
+# Source shared aliases (includes lg='lazygit' and all other aliases)
+if ! grep -q 'source ~/.zsh/aliases.sh' ~/.bashrc; then
+  echo 'source ~/.zsh/aliases.sh' >> ~/.bashrc
+  log_ok "Added 'source ~/.zsh/aliases.sh' to ~/.bashrc"
 else
-  log_info "Alias lg already exists in ~/.bashrc"
+  log_info "~/.zsh/aliases.sh already sourced in ~/.bashrc"
 fi
 
 # --- opencode ---
